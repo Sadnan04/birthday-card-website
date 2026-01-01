@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Birthday Card</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h1 {
+            color: #667eea;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .login-button:active {
+            transform: translateY(0);
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c33;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+            border-left: 4px solid #c33;
+        }
+
+        .error-message.show {
+            display: block;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .birthday-icon {
+            font-size: 48px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .logout-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #667eea;
+            border: 2px solid #667eea;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .logout-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #667eea;
+            border: 2px solid #667eea;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .back-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .back-btn {
+                top: 10px;
+                left: 10px;
+                padding: 8px 16px;
+                font-size: 12px;
+            }
+        }
+        .confetti-container,
+        .balloons-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            will-change: transform, opacity;
+            animation: confettiFall 3s linear forwards;
+        }
+
+        .confetti.shape-square {
+            border-radius: 0;
+        }
+
+        .confetti.shape-circle {
+            border-radius: 50%;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) translateX(var(--drift, 0)) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .balloon {
+            position: absolute;
+            will-change: transform;
+            animation: balloonFloat 15s ease-in-out infinite;
+            transform-origin: bottom center;
+        }
+
+        .balloon::before {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 2px;
+        }
+
+        .balloon-body {
+            width: 50px;
+            height: 65px;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: relative;
+            box-shadow: inset -10px -10px 0 rgba(0, 0, 0, 0.1);
+            animation: balloonSway 3s ease-in-out infinite;
+        }
+
+        .balloon.red .balloon-body { background: linear-gradient(135deg, #ff6b6b, #ee5a6f); }
+        .balloon.blue .balloon-body { background: linear-gradient(135deg, #4ecdc4, #44a08d); }
+        .balloon.green .balloon-body { background: linear-gradient(135deg, #95e1d3, #fce38a); }
+        .balloon.purple .balloon-body { background: linear-gradient(135deg, #a8edea, #fed6e3); }
+        .balloon.pink .balloon-body { background: linear-gradient(135deg, #ff9a9e, #fecfef); }
+        .balloon.yellow .balloon-body { background: linear-gradient(135deg, #feca57, #ff9ff3); }
+
+        @keyframes balloonFloat {
+            0% {
+                transform: translateY(100vh) translateX(0) scale(0.8);
+                opacity: 0;
+            }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% {
+                transform: translateY(-20vh) translateX(var(--drift, 0)) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        @keyframes balloonSway {
+            0%, 100% { transform: rotate(-2deg); }
+            50% { transform: rotate(2deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="confetti-container" id="confetti"></div>
+    <div class="balloons-container" id="balloons"></div>
+    
+    <button class="logout-btn" id="logoutButton" title="Logout">Logout</button>
+    <button class="back-btn" id="backButton" title="Go Back">← Back</button>
+    
+    <!-- Audio Elements (for persistent music across pages) -->
+    <audio id="backgroundMusic" loop>
+        <source src="10cm - spring snow (sped up).mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    
+    <div class="login-container">
+        <div class="login-header">
+            <div class="birthday-icon">🎂</div>
+            <h1>Welcome Back!</h1>
+            <p>Please login to access the birthday card</p>
+        </div>
+
+        <div class="error-message" id="errorMessage">
+            Invalid username or password. Please try again.
+        </div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input 
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    placeholder="Enter your username"
+                    required
+                    autocomplete="username"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    placeholder="Enter your password"
+                    required
+                    autocomplete="current-password"
+                >
+            </div>
+
+            <button type="submit" class="login-button">Login</button>
+        </form>
+    </div>
+
+    <script>
+        // Default credentials (you can change these)
+        const CORRECT_USERNAME = 'Aurpy';
+        const CORRECT_PASSWORD = '123';
+
+        const loginForm = document.getElementById('loginForm');
+        const errorMessage = document.getElementById('errorMessage');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value;
+
+            // Hide error message
+            errorMessage.classList.remove('show');
+
+            // Validate credentials
+            if (username === CORRECT_USERNAME && password === CORRECT_PASSWORD) {
+                // Successful login - redirect to index.html
+                window.location.href = 'index.html';
+            } else {
+                // Show error message
+                errorMessage.classList.add('show');
+                
+                // Clear password field
+                passwordInput.value = '';
+                passwordInput.focus();
+            }
+        });
+
+        // Clear error message when user starts typing
+        usernameInput.addEventListener('input', function() {
+            errorMessage.classList.remove('show');
+        });
+
+        passwordInput.addEventListener('input', function() {
+            errorMessage.classList.remove('show');
+        });
+
+        // Logout functionality
+        const logoutButton = document.getElementById('logoutButton');
+        if (logoutButton) {
+            logoutButton.addEventListener('click', function() {
+                if (confirm('Are you sure you want to logout?')) {
+                    // Already on login page, just refresh or show message
+                    alert('You are already on the login page.');
+                }
+            });
+        }
+
+        // Back Button Functionality
+        const backButton = document.getElementById('backButton');
+        if (backButton) {
+            backButton.addEventListener('click', function() {
+                // Check if there's history to go back to
+                if (window.history.length > 1) {
+                    window.history.back();
+                } else {
+                    // If no history, just show a message
+                    alert('No previous page to go back to.');
+                }
+            });
+        }
+
+        // Birthday Animations for Login Page
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const isLowEndDevice = isMobile && (navigator.hardwareConcurrency <= 2 || navigator.deviceMemory <= 2);
+
+        function createConfetti() {
+            const confettiContainer = document.getElementById('confetti');
+            if (!confettiContainer) return;
+            
+            const colors = ['#f093fb', '#f5576c', '#4facfe', '#00f2fe', '#feca57', '#48dbfb', '#ff6b6b', '#4ecdc4'];
+            const shapes = ['square', 'circle'];
+            const count = isLowEndDevice ? 10 : (isMobile ? 20 : 30);
+            const fragment = document.createDocumentFragment();
+            
+            for (let i = 0; i < count; i++) {
+                const confetti = document.createElement('div');
+                const shape = shapes[Math.floor(Math.random() * shapes.length)];
+                confetti.className = `confetti shape-${shape}`;
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                confetti.style.animationDuration = (Math.random() * 2 + 2.5) + 's';
+                confetti.style.setProperty('--drift', (Math.random() * 100 - 50) + 'px');
+                fragment.appendChild(confetti);
+            }
+            
+            confettiContainer.appendChild(fragment);
+        }
+
+        function createBalloons() {
+            const balloonsContainer = document.getElementById('balloons');
+            if (!balloonsContainer) return;
+            
+            const colors = ['red', 'blue', 'green', 'purple', 'pink'];
+            const count = isLowEndDevice ? 2 : (isMobile ? 3 : 4);
+            const fragment = document.createDocumentFragment();
+            
+            for (let i = 0; i < count; i++) {
+                const balloon = document.createElement('div');
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                balloon.className = `balloon ${color}`;
+                balloon.style.left = Math.random() * 100 + '%';
+                balloon.style.animationDelay = Math.random() * 3 + 's';
+                balloon.style.animationDuration = (12 + Math.random() * 6) + 's';
+                balloon.style.setProperty('--drift', (Math.random() * 80 - 40) + 'px');
+                
+                const balloonBody = document.createElement('div');
+                balloonBody.className = 'balloon-body';
+                balloon.appendChild(balloonBody);
+                fragment.appendChild(balloon);
+            }
+            
+            balloonsContainer.appendChild(fragment);
+        }
+
+        // Initialize animations
+        createConfetti();
+        createBalloons();
+        setInterval(createConfetti, 3000);
+        setInterval(createBalloons, 4000);
+
+        // Initialize music controls (for persistent music across pages)
+        if (typeof initializeMusicControls === 'function') {
+            initializeMusicControls();
+        } else {
+            // If script.js is not loaded, add basic music resume functionality
+            const backgroundMusic = document.getElementById('backgroundMusic');
+            if (backgroundMusic) {
+                const savedMusicState = localStorage.getItem('birthdayMusicPlaying');
+                const savedVolume = localStorage.getItem('birthdayMusicVolume');
+                const savedHasStarted = localStorage.getItem('birthdayMusicStarted');
+                
+                if (savedVolume) {
+                    backgroundMusic.volume = parseFloat(savedVolume);
+                }
+                
+                if (savedMusicState === 'true' && savedHasStarted === 'true') {
+                    // Try to resume music
+                    const playPromise = backgroundMusic.play();
+                    if (playPromise !== undefined) {
+                        playPromise.catch(error => {
+                            console.warn('Could not auto-resume music:', error);
+                        });
+                    }
+                }
+                
+                // Pause music when user clicks/touches the page (but not on buttons)
+                function handlePageClick(e) {
+                    const target = e.target;
+                    const isButton = target.closest('.back-btn') || 
+                                    target.closest('.logout-btn') ||
+                                    target.closest('button');
+                    
+                    if (!isButton && backgroundMusic && !backgroundMusic.paused) {
+                        backgroundMusic.pause();
+                        localStorage.setItem('birthdayMusicPlaying', 'false');
+                    }
+                }
+                
+                document.addEventListener('click', handlePageClick, true);
+                document.addEventListener('touchstart', handlePageClick, true);
+            }
+        }
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
+

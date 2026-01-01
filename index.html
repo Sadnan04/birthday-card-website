@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Wishes</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="confetti-container" id="confetti"></div>
+    <div class="balloons-container" id="balloons"></div>
+    
+    <button class="logout-btn" id="logoutButton" title="Logout">Logout</button>
+    <button class="back-btn" id="backButton" title="Go Back">← Back</button>
+    
+    <!-- Music Control Button -->
+    <button class="play-music-btn" id="playMusicBtn" title="Play Birthday Music">
+        <span class="music-icon">🎵</span>
+        <span class="music-text">Play Music</span>
+    </button>
+    
+    <!-- Floating Music Control -->
+    <div class="floating-music-control hidden" id="floatingMusicControl">
+        <button class="music-toggle-btn" id="musicToggleBtn" title="Play/Pause">
+            <span class="play-pause-icon">⏸</span>
+        </button>
+        <div class="music-info">
+            <span class="music-title">Birthday Music</span>
+            <div class="volume-control">
+                <input type="range" id="volumeSlider" min="0" max="100" value="70" title="Volume">
+                <span class="volume-icon">🔊</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Audio Elements -->
+    <audio id="backgroundMusic" loop>
+        <source src="10cm - spring snow (sped up).mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <audio id="celebrationSound">
+        <!-- Add your celebration sound file here -->
+        <!-- <source src="celebration-sound.mp3" type="audio/mpeg"> -->
+        <!-- <source src="celebration-sound.ogg" type="audio/ogg"> -->
+        Your browser does not support the audio element.
+    </audio>
+    
+    <div class="card-front" id="cardFront">
+        <div class="front-content">
+            <div class="birthday-image-container">
+                <img src="Aurpy 11.jpg?height=250&width=250" alt="Birthday Person" id="birthdayImage">
+            </div>
+            <h1 class="birthday-name" id="birthdayName">Ishrat Jahan Aurpy</h1>
+            <p class="birthday-date" id="birthdayDate"></p>
+            <p class="age-display" id="ageDisplay"></p>
+            <button class="open-card-btn" id="revealButton">
+                <span>🎉</span> Open Birthday Card <span>🎉</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="card-inside hidden" id="cardInside">
+        <div class="card-header">
+            <h1>Happy Birthday! 🎂</h1>
+            <div class="header-buttons">
+                <button class="close-btn" id="closeButton">✕</button>
+            </div>
+        </div>
+
+        <div class="birthday-card-content">
+            <div class="card-images-grid">
+                <div class="card-image-container">
+                    <img src="A Web 2.jpg" alt="Birthday Card Image 2" id="cardImage2">
+                </div>
+                <div class="card-image-container">
+                    <img src="A Web 3.jpg" alt="Birthday Card Image 3" id="cardImage3">
+                </div>
+            </div>
+            <div class="birthday-message">
+                <h2>Wishing You a Wonderful Day! 🎉</h2>
+                <div class="message-text">
+                    <p>On this special day, may all your dreams come true and may you be blessed with endless joy and happiness. You deserve all the wonderful things life has to offer!</p>
+                    <p>Here's to another amazing year filled with love, laughter, and countless beautiful memories. Enjoy your special day to the fullest! 🎈</p>
+                </div>
+                <div class="message-signature">
+                    <span class="celebration-text">Happy Birthday, Ishrat Jahan Aurpy! 🎂✨</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="memories-gift-section">
+            <div class="slideshow-section">
+                <h2>Photo Memories</h2>
+                <div class="slideshow-container">
+                    <div class="slideshow" id="slideshow">
+                        <img src="A Web 1.jpg" alt="Birthday Photo 1" class="slide active">
+                        <img src="A Web 4.jpg" alt="Birthday Photo 4" class="slide">
+                        <img src="A Web 5.jpg" alt="Birthday Photo 5" class="slide">
+                        <img src="A Web 6.jpg" alt="Birthday Photo 6" class="slide">
+                    </div>
+                    <button class="slide-btn prev" id="prevSlide">❮</button>
+                    <button class="slide-btn next" id="nextSlide">❯</button>
+                    <div class="slide-indicators" id="indicators"></div>
+                </div>
+            </div>
+
+            <div class="countdown-section">
+                <h2>⏰ Countdown to Your Special Day</h2>
+                <div class="countdown-container">
+                    <div class="flip-card-group">
+                        <div class="flip-card" id="daysCard">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <div class="flip-card-top">00</div>
+                                    <div class="flip-card-bottom">00</div>
+                                </div>
+                                <div class="flip-card-back">
+                                    <div class="flip-card-top">00</div>
+                                    <div class="flip-card-bottom">00</div>
+                                </div>
+                            </div>
+                            <div class="flip-card-label">DAYS</div>
+                        </div>
+                        <div class="flip-card" id="hoursCard">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <div class="flip-card-top">00</div>
+                                    <div class="flip-card-bottom">00</div>
+                                </div>
+                                <div class="flip-card-back">
+                                    <div class="flip-card-top">00</div>
+                                    <div class="flip-card-bottom">00</div>
+                                </div>
+                            </div>
+                            <div class="flip-card-label">HOURS</div>
+                        </div>
+                        <div class="flip-card" id="minutesCard">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <div class="flip-card-top">00</div>
+                                    <div class="flip-card-bottom">00</div>
+                                </div>
+                                <div class="flip-card-back">
+                                    <div class="flip-card-top">00</div>
+                                    <div class="flip-card-bottom">00</div>
+                                </div>
+                            </div>
+                            <div class="flip-card-label">MINUTES</div>
+                        </div>
+                        <div class="flip-card" id="secondsCard">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <div class="flip-card-top">00</div>
+                                    <div class="flip-card-bottom">00</div>
+                                </div>
+                                <div class="flip-card-back">
+                                    <div class="flip-card-top">00</div>
+                                    <div class="flip-card-bottom">00</div>
+                                </div>
+                            </div>
+                            <div class="flip-card-label">SECONDS</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gift-section">
+                <h2>🎁 Open Your Gift! 🎁</h2>
+                <div class="gift-container">
+                    <div class="gift-box" id="giftBox">
+                        <div class="gift-box-top" id="giftBoxTop"></div>
+                        <div class="gift-box-bottom" id="giftBoxBottom">
+                            <div class="gift-bow">
+                                <div class="bow-center"></div>
+                                <div class="bow-loop bow-loop-left"></div>
+                                <div class="bow-loop bow-loop-right"></div>
+                            </div>
+                        </div>
+                        <div class="gift-sparkle sparkle-1">✨</div>
+                        <div class="gift-sparkle sparkle-2">✨</div>
+                        <div class="gift-sparkle sparkle-3">✨</div>
+                    </div>
+                    <p class="gift-instruction">Click the gift box to open!</p>
+                    
+                    <div class="gift-content hidden" id="giftContent">
+                        <div class="gift-message">
+                            <h3>🎉 Surprise! 🎉</h3>
+                            <p class="gift-message-text">Wishing you the most wonderful birthday filled with joy, laughter, and all the happiness in the world! May this special day bring you countless blessings and beautiful memories. Enjoy every moment! 🎂✨</p>
+                            <div class="gift-image-container">
+                                <img src="Aurpy 11.jpg" alt="Birthday Surprise" class="gift-image">
+                            </div>
+                            <button class="final-message-btn" id="openFinalMessageBtn">
+                                <span>💌</span> Open the Final Message <span>💌</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Full-Screen Final Birthday Message -->
+    <div class="final-message-overlay hidden" id="finalMessageOverlay">
+        <div class="fireworks-container" id="fireworks"></div>
+        <div class="final-message-content">
+            <button class="close-final-message-btn" id="closeFinalMessageBtn">✕</button>
+            <div class="final-message-text">
+                <h1 class="animated-title" id="animatedTitle">Happy Birthday!</h1>
+                <h2 class="animated-subtitle" id="animatedSubtitle">Ishrat Jahan Aurpy</h2>
+                <p class="animated-message" id="animatedMessage">
+                    On this extraordinary day, may your heart be filled with endless joy, 
+                    your dreams come true, and your life be blessed with all the happiness 
+                    you deserve. You are truly special and loved beyond measure! 🎂✨🎉
+                </p>
+            </div>
+            <div class="final-video-section">
+                <h3>🎬 Add Your Special Video</h3>
+                <div class="final-video-controls">
+                    <input type="text" id="finalVideoUrl" placeholder="Paste YouTube URL here">
+                    <button id="addFinalVideoButton">Add Video</button>
+                    <button class="delete-btn hidden" id="removeFinalVideoButton">Remove Video</button>
+                </div>
+                <div class="final-video-display" id="finalVideoDisplay">
+                    <p class="video-placeholder">No video added yet. Add a special video above!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

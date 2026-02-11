@@ -814,6 +814,11 @@
 
             const textarea = document.createElement('textarea');
             textarea.id = 'promiseText';
+            // Default promise text (you can edit this text directly in the code)
+            const defaultPromiseText = `তুমি থেকো। আমি আছি আগামী ৮০ বছর তোমার পাশে।
+তোমার প্রিয় 
+Totoro`;
+
             textarea.placeholder = 'Write your promise here...';
 
             const actions = document.createElement('div');
@@ -842,6 +847,9 @@
             if (savedPromise) {
                 textarea.value = savedPromise;
                 savedMsg.textContent = 'Saved and waiting in your heart 💖';
+            } else {
+                // If nothing saved yet, show the default promise text
+                textarea.value = defaultPromiseText;
             }
 
             // Save on button click

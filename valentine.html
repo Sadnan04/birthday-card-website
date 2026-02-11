@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine Week Surprise 2026</title>
+
+    <!--
+      Valentine Week Surprise Page
+      - Shows different romantic content based on today's date in February 2026
+      - If today is not one of the special days, a countdown to the next event is shown
+      - Built with HTML, CSS, and vanilla JavaScript only
+    -->
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: radial-gradient(circle at top, #ffd1dc 0%, #ffe6f0 30%, #f7d9ff 60%, #f0f4ff 100%);
+            color: #4a2c4f;
+        }
+
+        .valentine-wrapper {
+            width: 100%;
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            padding: 30px 20px 40px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .valentine-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .valentine-header h1 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, #ff5f6d, #ffc371);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .valentine-header p {
+            font-size: 0.95rem;
+            color: #7a4f7f;
+        }
+
+        /* Back button to return to main birthday page */
+        .val-back-btn {
+            position: absolute;
+            top: 18px;
+            left: 18px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #e91e63;
+            border: 2px solid #f48fb1;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            z-index: 10;
+        }
+
+        .val-back-btn:hover {
+            background: #f48fb1;
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        /* Preview controls to see each day's card one by one */
+        .preview-controls {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .preview-btn {
+            background: rgba(255, 182, 193, 0.8);
+            border: none;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #a00040;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .preview-btn:hover {
+            background: rgba(255, 105, 180, 0.9);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        .preview-note {
+            margin-top: 6px;
+            font-size: 0.8rem;
+            color: #a070a5;
+        }
+
+        .event-title {
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #e63972;
+            letter-spacing: 1px;
+        }
+
+        .event-date-label {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #a070a5;
+            margin-bottom: 25px;
+        }
+
+        .event-content {
+            min-height: 260px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* --- ROSE DAY (TEXT ROSE) --- */
+        .rose-container {
+            position: relative;
+            width: 260px;
+            height: 260px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .rose-text {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-weight: 700;
+            color: #ff4b7d;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: rosePulse 3s ease-in-out infinite;
+        }
+
+        .rose-text span {
+            position: absolute;
+            font-size: 0.85rem;
+        }
+
+        /* Arrange the “I LOVE YOU” text petals around a circle to evoke a rose */
+        .rose-text span:nth-child(1) { transform: rotate(0deg) translateY(-80px); }
+        .rose-text span:nth-child(2) { transform: rotate(30deg) translateY(-80px); }
+        .rose-text span:nth-child(3) { transform: rotate(60deg) translateY(-80px); }
+        .rose-text span:nth-child(4) { transform: rotate(90deg) translateY(-80px); }
+        .rose-text span:nth-child(5) { transform: rotate(120deg) translateY(-80px); }
+        .rose-text span:nth-child(6) { transform: rotate(150deg) translateY(-80px); }
+        .rose-text span:nth-child(7) { transform: rotate(180deg) translateY(-80px); }
+        .rose-text span:nth-child(8) { transform: rotate(210deg) translateY(-80px); }
+        .rose-text span:nth-child(9) { transform: rotate(240deg) translateY(-80px); }
+        .rose-text span:nth-child(10) { transform: rotate(270deg) translateY(-80px); }
+        .rose-text span:nth-child(11) { transform: rotate(300deg) translateY(-80px); }
+        .rose-text span:nth-child(12) { transform: rotate(330deg) translateY(-80px); }
+
+        .rose-center {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #ffd1e0 0%, #ff4b7d 70%, #b31237 100%);
+            box-shadow: 0 0 25px rgba(255, 75, 125, 0.5);
+            animation: roseRotate 10s linear infinite;
+        }
+
+        .rose-stem {
+            position: absolute;
+            bottom: -40px;
+            width: 6px;
+            height: 100px;
+            background: linear-gradient(to bottom, #2ecc71, #145a32);
+            border-radius: 3px;
+        }
+
+        .rose-leaf {
+            position: absolute;
+            width: 40px;
+            height: 20px;
+            border-radius: 20px 0 20px 0;
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+        }
+
+        .rose-leaf.left {
+            bottom: -10px;
+            left: -25px;
+            transform: rotate(-30deg);
+        }
+
+        .rose-leaf.right {
+            bottom: 10px;
+            right: -25px;
+            transform: rotate(40deg);
+        }
+
+        @keyframes rosePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+
+        @keyframes roseRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* --- CHOCOLATE DAY --- */
+        .chocolates {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .chocolate-card {
+            width: 130px;
+            height: 160px;
+            border-radius: 18px;
+            background: linear-gradient(145deg, #4b2e2a, #2f1a17);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+            color: #fbe9e7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            animation: chocoBounce 1.5s ease-in-out infinite;
+        }
+
+        .chocolate-card.dark {
+            background: linear-gradient(145deg, #1b1b1b, #3b2b24);
+        }
+
+        .chocolate-label {
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-top: 8px;
+            font-size: 0.75rem;
+        }
+
+        .chocolate-bar {
+            width: 80px;
+            height: 90px;
+            background: #5d4037;
+            border-radius: 10px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 4px;
+            padding: 5px;
+        }
+
+        .chocolate-square {
+            background: #795548;
+            border-radius: 4px;
+            box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.2),
+                        inset 0 -2px 4px rgba(0, 0, 0, 0.4);
+        }
+
+        @keyframes chocoBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        /* --- TEDDY DAY (TOTORO-STYLE) --- */
+        .teddy-message-box {
+            padding: 16px 24px;
+            background: #ffe4f0;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-align: center;
+            font-weight: 600;
+            color: #e91e63;
+        }
+
+        .teddy-message-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .totoro-container {
+            margin-top: 25px;
+            display: none;
+            animation: totoroPop 0.6s ease-out forwards;
+        }
+
+        .totoro {
+            width: 200px;
+            height: 200px;
+            border-radius: 50% 50% 45% 45%;
+            background: linear-gradient(180deg, #cfd8dc 0%, #90a4ae 60%, #607d8b 100%);
+            position: relative;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+            margin: 0 auto;
+        }
+
+        .totoro-belly {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 140px;
+            height: 110px;
+            border-radius: 70px 70px 60px 60px;
+            background: #eceff1;
+        }
+
+        .totoro-eye {
+            position: absolute;
+            top: 60px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .totoro-eye::before {
+            content: "";
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #000;
+        }
+
+        .totoro-eye.left { left: 60px; }
+        .totoro-eye.right { right: 60px; }
+
+        .totoro-nose {
+            position: absolute;
+            top: 86px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24px;
+            height: 10px;
+            border-radius: 20px;
+            background: #455a64;
+        }
+
+        .totoro-mouth {
+            position: absolute;
+            top: 102px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 30px;
+            border-radius: 0 0 60px 60px;
+            border: 3px solid #455a64;
+            border-top: none;
+        }
+
+        .totoro-ear {
+            position: absolute;
+            top: -30px;
+            width: 40px;
+            height: 60px;
+            border-radius: 40px 40px 0 0;
+            background: linear-gradient(180deg, #cfd8dc 0%, #90a4ae 100%);
+        }
+
+        .totoro-ear.left { left: 40px; transform: rotate(-10deg); }
+        .totoro-ear.right { right: 40px; transform: rotate(10deg); }
+
+        @keyframes totoroPop {
+            from { transform: scale(0.7) translateY(20px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        /* --- PROMISE DAY --- */
+        .promise-card {
+            background: #fff8e1;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .promise-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #ff6f00;
+        }
+
+        .promise-card textarea {
+            width: 100%;
+            min-height: 120px;
+            border-radius: 12px;
+            border: 2px solid #ffe082;
+            padding: 12px;
+            resize: vertical;
+            font-family: inherit;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .promise-card textarea:focus {
+            border-color: #ffb300;
+            box-shadow: 0 0 0 3px rgba(255, 179, 0, 0.25);
+        }
+
+        .promise-actions {
+            margin-top: 12px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .promise-save-btn {
+            background: linear-gradient(135deg, #ffb74d, #ff8a65);
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .promise-save-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(255, 138, 101, 0.4);
+        }
+
+        .promise-saved-message {
+            margin-top: 8px;
+            font-size: 0.85rem;
+            color: #ff6f00;
+            text-align: right;
+        }
+
+        /* --- HUG DAY --- */
+        .hug-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .hug-upload input[type="file"] {
+            border: 2px dashed #b39ddb;
+            padding: 10px 15px;
+            border-radius: 16px;
+            cursor: pointer;
+            background: #f3e5f5;
+        }
+
+        .hug-preview {
+            max-width: 280px;
+            max-height: 260px;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+        }
+
+        .hug-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* --- VALENTINE'S DAY TEXT --- */
+        .valentine-message {
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .valentine-message h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #e91e63;
+        }
+
+        .valentine-animated-text {
+            font-size: 1.4rem;
+            line-height: 1.8;
+            color: #4a2c4f;
+            animation: typewriter 8s steps(40, end) 1 forwards, glow 3s ease-in-out infinite alternate;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 3px solid rgba(233, 30, 99, 0.7);
+            padding-right: 6px;
+            margin-top: 10px;
+        }
+
+        @keyframes typewriter {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px rgba(233, 30, 99, 0.3); }
+            to { text-shadow: 0 0 20px rgba(233, 30, 99, 0.8); }
+        }
+
+        /* --- COUNTDOWN TO NEXT EVENT --- */
+        .countdown-info {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #6a3c74;
+        }
+
+        .countdown-info span {
+            font-weight: 700;
+            color: #e91e63;
+        }
+
+        /* --- MOBILE --- */
+        @media (max-width: 768px) {
+            .valentine-wrapper {
+                padding: 24px 16px 30px;
+            }
+
+            .event-content {
+                min-height: 220px;
+            }
+
+            .valentine-message h2 {
+                font-size: 1.6rem;
+            }
+
+            .valentine-animated-text {
+                font-size: 1.1rem;
+                white-space: normal;
+                border-right: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="val-back-btn" onclick="window.history.length > 1 ? window.history.back() : window.location.href='index.html'">
+        ← Back to Birthday Card
+    </button>
+
+    <div class="valentine-wrapper">
+        <div class="valentine-header">
+            <h1>Valentine Week Surprise 2026</h1>
+            <p id="dateInfo">Loading today's surprise...</p>
+
+            <div class="preview-controls">
+                <button class="preview-btn" id="prevEventBtn">◀ Previous Day</button>
+                <button class="preview-btn" id="todayEventBtn">Today</button>
+                <button class="preview-btn" id="nextEventBtn">Next Day ▶</button>
+            </div>
+            <div class="preview-note">
+                You can use these buttons to preview each day's surprise.
+            </div>
+        </div>
+
+        <div class="event-title" id="eventTitle"></div>
+        <div class="event-date-label" id="eventDateLabel"></div>
+
+        <div class="event-content" id="eventContent">
+            <!-- Dynamic content injected by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        // ----------------------------------------
+        // Valentine Week Event Definitions
+        // ----------------------------------------
+        const events = [
+            {
+                key: 'roseDay',
+                label: 'Rose Day',
+                date: new Date(2026, 1, 7) // February 7, 2026
+            },
+            {
+                key: 'chocolateDay',
+                label: 'Chocolate Day',
+                date: new Date(2026, 1, 9)
+            },
+            {
+                key: 'teddyDay',
+                label: 'Teddy Day',
+                date: new Date(2026, 1, 10)
+            },
+            {
+                key: 'promiseDay',
+                label: 'Promise Day',
+                date: new Date(2026, 1, 11)
+            },
+            {
+                key: 'hugDay',
+                label: 'Hug Day',
+                date: new Date(2026, 1, 12)
+            },
+            {
+                key: 'valentinesDay',
+                label: "Valentine's Day",
+                date: new Date(2026, 1, 14)
+            }
+        ];
+
+        /**
+         * Normalize a Date to midnight for comparison (no time component).
+         */
+        function normalizeDate(date) {
+            return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        }
+
+        /**
+         * Format a date in a friendly way (e.g., February 7, 2026).
+         */
+        function formatDate(date) {
+            return date.toLocaleDateString('en-US', {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric'
+            });
+        }
+
+        /**
+         * Find today's event (if any) based on normalized date comparison.
+         */
+        function getTodayEvent(todayNorm) {
+            return events.find(evt => normalizeDate(evt.date).getTime() === todayNorm.getTime());
+        }
+
+        /**
+         * Find the next event after today.
+         */
+        function getNextEvent(todayNorm) {
+            const futureEvents = events.filter(evt => normalizeDate(evt.date) > todayNorm);
+            if (futureEvents.length === 0) return null;
+            futureEvents.sort((a, b) => a.date - b.date);
+            return futureEvents[0];
+        }
+
+        /**
+         * Render content for each special day.
+         * These helpers only draw the inner card; title/date are handled separately.
+         */
+        function renderRoseDay(container) {
+            container.innerHTML = '';
+            const rose = document.createElement('div');
+            rose.className = 'rose-container';
+
+            const roseText = document.createElement('div');
+            roseText.className = 'rose-text';
+
+            // Create 12 petals using “I LOVE YOU”
+            for (let i = 0; i < 12; i++) {
+                const span = document.createElement('span');
+                span.textContent = 'I LOVE YOU';
+                roseText.appendChild(span);
+            }
+
+            const center = document.createElement('div');
+            center.className = 'rose-center';
+
+            const stem = document.createElement('div');
+            stem.className = 'rose-stem';
+
+            const leafLeft = document.createElement('div');
+            leafLeft.className = 'rose-leaf left';
+
+            const leafRight = document.createElement('div');
+            leafRight.className = 'rose-leaf right';
+
+            rose.appendChild(roseText);
+            rose.appendChild(center);
+            rose.appendChild(stem);
+            rose.appendChild(leafLeft);
+            rose.appendChild(leafRight);
+
+            container.appendChild(rose);
+        }
+
+        function renderChocolateDay(container) {
+            container.innerHTML = '';
+            const wrapper = document.createElement('div');
+            wrapper.className = 'chocolates';
+
+            // KitKat style bar
+            const kitkatCard = document.createElement('div');
+            kitkatCard.className = 'chocolate-card';
+            const kitkatBar = document.createElement('div');
+            kitkatBar.className = 'chocolate-bar';
+            for (let i = 0; i < 6; i++) {
+                const square = document.createElement('div');
+                square.className = 'chocolate-square';
+                kitkatBar.appendChild(square);
+            }
+            const kitkatLabel = document.createElement('div');
+            kitkatLabel.className = 'chocolate-label';
+            kitkatLabel.textContent = 'KITKAT';
+            kitkatCard.appendChild(kitkatBar);
+            kitkatCard.appendChild(kitkatLabel);
+
+            // Dark chocolate style bar
+            const darkCard = document.createElement('div');
+            darkCard.className = 'chocolate-card dark';
+            const darkBar = document.createElement('div');
+            darkBar.className = 'chocolate-bar';
+            for (let i = 0; i < 6; i++) {
+                const square = document.createElement('div');
+                square.className = 'chocolate-square';
+                darkBar.appendChild(square);
+            }
+            const darkLabel = document.createElement('div');
+            darkLabel.className = 'chocolate-label';
+            darkLabel.textContent = 'DARK';
+            darkCard.appendChild(darkBar);
+            darkCard.appendChild(darkLabel);
+
+            wrapper.appendChild(kitkatCard);
+            wrapper.appendChild(darkCard);
+
+            container.appendChild(wrapper);
+        }
+
+        function renderTeddyDay(container) {
+            container.innerHTML = '';
+
+            const box = document.createElement('div');
+            box.className = 'teddy-message-box';
+            box.textContent = 'Click me';
+
+            const totoroContainer = document.createElement('div');
+            totoroContainer.className = 'totoro-container';
+
+            const totoro = document.createElement('div');
+            totoro.className = 'totoro';
+
+            const earLeft = document.createElement('div');
+            earLeft.className = 'totoro-ear left';
+            const earRight = document.createElement('div');
+            earRight.className = 'totoro-ear right';
+
+            const belly = document.createElement('div');
+            belly.className = 'totoro-belly';
+
+            const eyeLeft = document.createElement('div');
+            eyeLeft.className = 'totoro-eye left';
+            const eyeRight = document.createElement('div');
+            eyeRight.className = 'totoro-eye right';
+
+            const nose = document.createElement('div');
+            nose.className = 'totoro-nose';
+
+            const mouth = document.createElement('div');
+            mouth.className = 'totoro-mouth';
+
+            totoro.appendChild(earLeft);
+            totoro.appendChild(earRight);
+            totoro.appendChild(belly);
+            totoro.appendChild(eyeLeft);
+            totoro.appendChild(eyeRight);
+            totoro.appendChild(nose);
+            totoro.appendChild(mouth);
+
+            totoroContainer.appendChild(totoro);
+
+            box.addEventListener('click', () => {
+                totoroContainer.style.display = 'block';
+            });
+
+            container.appendChild(box);
+            container.appendChild(totoroContainer);
+        }
+
+        function renderPromiseDay(container) {
+            container.innerHTML = '';
+
+            const card = document.createElement('div');
+            card.className = 'promise-card';
+
+            const heading = document.createElement('h3');
+            heading.textContent = 'My Promise to You';
+
+            const textarea = document.createElement('textarea');
+            textarea.id = 'promiseText';
+            textarea.placeholder = 'Write your promise here...';
+
+            const actions = document.createElement('div');
+            actions.className = 'promise-actions';
+
+            const saveBtn = document.createElement('button');
+            saveBtn.className = 'promise-save-btn';
+            saveBtn.textContent = 'Save';
+
+            const savedMsg = document.createElement('div');
+            savedMsg.className = 'promise-saved-message';
+            savedMsg.id = 'promiseSavedMessage';
+            savedMsg.textContent = '';
+
+            actions.appendChild(saveBtn);
+
+            card.appendChild(heading);
+            card.appendChild(textarea);
+            card.appendChild(actions);
+            card.appendChild(savedMsg);
+
+            container.appendChild(card);
+
+            // Load saved promise from localStorage
+            const savedPromise = localStorage.getItem('valentinePromiseDayMessage');
+            if (savedPromise) {
+                textarea.value = savedPromise;
+                savedMsg.textContent = 'Saved and waiting in your heart 💖';
+            }
+
+            // Save on button click
+            saveBtn.addEventListener('click', () => {
+                const value = textarea.value.trim();
+                localStorage.setItem('valentinePromiseDayMessage', value);
+                savedMsg.textContent = value ? 'Saved and waiting in your heart 💖' : 'Cleared.';
+            });
+        }
+
+        function renderHugDay(container) {
+            container.innerHTML = '';
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'hug-upload';
+
+            const label = document.createElement('p');
+            label.textContent = 'Upload a photo that feels like a warm hug 💕';
+
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*';
+
+            const preview = document.createElement('div');
+            preview.className = 'hug-preview';
+
+            const savedImage = localStorage.getItem('valentineHugDayImage');
+            if (savedImage) {
+                const img = document.createElement('img');
+                img.src = savedImage;
+                preview.appendChild(img);
+            }
+
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files && e.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    preview.innerHTML = '';
+                    const img = document.createElement('img');
+                    img.src = event.target.result;
+                    preview.appendChild(img);
+
+                    // Save in localStorage so it stays after refresh
+                    localStorage.setItem('valentineHugDayImage', event.target.result);
+                };
+                reader.readAsDataURL(file);
+            });
+
+            wrapper.appendChild(label);
+            wrapper.appendChild(fileInput);
+            wrapper.appendChild(preview);
+
+            container.appendChild(wrapper);
+        }
+
+        function renderValentinesDay(container) {
+            container.innerHTML = '';
+
+            const wrap = document.createElement('div');
+            wrap.className = 'valentine-message';
+
+            const heading = document.createElement('h2');
+            heading.textContent = "Valentine's Day Surprise 💘";
+
+            const text = document.createElement('p');
+            text.className = 'valentine-animated-text';
+            text.textContent = 'Live the Life. Welcome to your second phase.';
+
+            wrap.appendChild(heading);
+            wrap.appendChild(text);
+
+            container.appendChild(wrap);
+        }
+
+        /**
+         * Wrapper to render by event key.
+         */
+        function renderEventByKey(key, container) {
+            switch (key) {
+                case 'roseDay':
+                    renderRoseDay(container);
+                    break;
+                case 'chocolateDay':
+                    renderChocolateDay(container);
+                    break;
+                case 'teddyDay':
+                    renderTeddyDay(container);
+                    break;
+                case 'promiseDay':
+                    renderPromiseDay(container);
+                    break;
+                case 'hugDay':
+                    renderHugDay(container);
+                    break;
+                case 'valentinesDay':
+                    renderValentinesDay(container);
+                    break;
+                default:
+                    container.textContent = 'A special surprise is coming soon 💕';
+            }
+        }
+
+        /**
+         * Render a countdown to the next Valentine week event.
+         */
+        function renderCountdownToNextEvent(container, todayNorm, nextEvent) {
+            container.innerHTML = '';
+            const info = document.createElement('div');
+            info.className = 'countdown-info';
+
+            if (!nextEvent) {
+                info.innerHTML = 'Valentine Week 2026 is over, but love is forever 💞';
+                container.appendChild(info);
+                return;
+            }
+
+            const diffMs = normalizeDate(nextEvent.date) - todayNorm;
+            const diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
+
+            info.innerHTML = `
+                Today is not one of the special Valentine Week days.<br>
+                Next event: <span>${nextEvent.label}</span> on <span>${formatDate(nextEvent.date)}</span><br>
+                Only <span>${diffDays}</span> day${diffDays !== 1 ? 's' : ''} to go 💘
+            `;
+
+            container.appendChild(info);
+        }
+
+        /**
+         * Main initializer: decide what to show based on today's date.
+         */
+        function initializeValentineWeek() {
+            const eventTitleEl = document.getElementById('eventTitle');
+            const eventDateLabelEl = document.getElementById('eventDateLabel');
+            const eventContentEl = document.getElementById('eventContent');
+            const dateInfoEl = document.getElementById('dateInfo');
+            const prevEventBtn = document.getElementById('prevEventBtn');
+            const nextEventBtn = document.getElementById('nextEventBtn');
+            const todayEventBtn = document.getElementById('todayEventBtn');
+
+            const today = new Date();
+            const todayNorm = normalizeDate(today);
+
+            dateInfoEl.textContent = `Today is ${formatDate(today)}`;
+
+            const todayEvent = getTodayEvent(todayNorm);
+            let currentPreviewIndex = null;
+
+            if (todayEvent) {
+                eventTitleEl.textContent = todayEvent.label;
+                eventDateLabelEl.textContent = formatDate(todayEvent.date);
+                renderEventByKey(todayEvent.key, eventContentEl);
+                currentPreviewIndex = events.findIndex(e => e.key === todayEvent.key);
+            } else {
+                const nextEvent = getNextEvent(todayNorm);
+                eventTitleEl.textContent = 'Countdown to the Next Valentine Surprise';
+                eventDateLabelEl.textContent = nextEvent
+                    ? `${nextEvent.label} – ${formatDate(nextEvent.date)}`
+                    : 'No more events scheduled.';
+                renderCountdownToNextEvent(eventContentEl, todayNorm, nextEvent);
+                currentPreviewIndex = nextEvent ? events.findIndex(e => e.key === nextEvent.key) : 0;
+            }
+
+            // Helper to show event by index (preview mode)
+            function showEventByIndex(index) {
+                if (!events.length) return;
+                currentPreviewIndex = (index + events.length) % events.length;
+                const evt = events[currentPreviewIndex];
+
+                eventTitleEl.textContent = `${evt.label} (Preview)`;
+                eventDateLabelEl.textContent = formatDate(evt.date);
+                renderEventByKey(evt.key, eventContentEl);
+            }
+
+            // Wire preview controls so you can see all cards one by one
+            if (prevEventBtn) {
+                prevEventBtn.addEventListener('click', () => {
+                    showEventByIndex((currentPreviewIndex ?? 0) - 1);
+                });
+            }
+
+            if (nextEventBtn) {
+                nextEventBtn.addEventListener('click', () => {
+                    showEventByIndex((currentPreviewIndex ?? 0) + 1);
+                });
+            }
+
+            if (todayEventBtn) {
+                todayEventBtn.addEventListener('click', () => {
+                    if (todayEvent) {
+                        eventTitleEl.textContent = todayEvent.label;
+                        eventDateLabelEl.textContent = formatDate(todayEvent.date);
+                        renderEventByKey(todayEvent.key, eventContentEl);
+                        currentPreviewIndex = events.findIndex(e => e.key === todayEvent.key);
+                    } else {
+                        const nextEvent = getNextEvent(todayNorm);
+                        eventTitleEl.textContent = 'Countdown to the Next Valentine Surprise';
+                        eventDateLabelEl.textContent = nextEvent
+                            ? `${nextEvent.label} – ${formatDate(nextEvent.date)}`
+                            : 'No more events scheduled.';
+                        renderCountdownToNextEvent(eventContentEl, todayNorm, nextEvent);
+                        currentPreviewIndex = nextEvent ? events.findIndex(e => e.key === nextEvent.key) : 0;
+                    }
+                });
+            }
+        }
+
+        // Initialize once DOM is ready
+        document.addEventListener('DOMContentLoaded', initializeValentineWeek);
+    </script>
+</body>
+</html>
+
+
